@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+</head>
+<body>
+    WELCOME
+    <div>
+        <a href='{{ user_status }}'>user status</a>
+    </div>
+    <hr>
+    <div>
+        <form method='post'>
+            <label>username
+                <input type='text' name='username' value='{{ ret_user }}'>{{ user_error }}
+            </label>
+            <br>
+            <label>password
+                <input type='password' name='password'>{{ password_error }}
+            </label>
+            <br>
+            <label>verify pw
+                <input type='password' name='verify'>{{ verify_error }}
+            </label>
+            <br>
+            <label>email(optional)
+                <input type='text' name='email' value='{{ ret_email }}'>{{ email_error }}
+            </label>
+            <br>
+            <input type='submit'>
+
+    </div>
+    <div>
+        {{ html }}
+    </div>
+</body>
