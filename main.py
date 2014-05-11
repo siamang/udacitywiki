@@ -98,7 +98,9 @@ class MainPage(Handler):
     Main page of the wiki.  Contains welcom message
     """
     def get(self, url):
+        # using cookie for referral url
         self.set_cookie('current', url)
+
         content = get_wiki(url)
         # Nothing found in the database of /.... (url)
         if not content:
@@ -189,9 +191,17 @@ class SignUp(Handler):
     Sign up page
     """
     def get(self):
-        self.render('signup.html')
+        refer = self.request.headers.get('referer', '/')
+        self.render('signup.html', refer = refer)
 
     def post(self):
+
+        # sets redirect url
+        refer = str(self.request.get('refer'))
+        if not refer or refer.startswith('/login'):
+            refer = '/'
+
+        # signup process
         have_error = False
         self.username = self.request.get('username')
         self.password = self.request.get('password')
@@ -211,7 +221,6 @@ class SignUp(Handler):
         if not valid_password(self.password):
             params['password_error'] = "Not a valid password."
             have_error = True
-
         elif self.password != self.verify:
             params['verify_error'] = "Your passwords didn't match."
             have_error = True
@@ -230,17 +239,24 @@ class SignUp(Handler):
                              email = self.email)
             new_user.put()
             self.set_cookie('name', self.username)
-            self.redirect('/')
+            self.redirect(refer)
 
 class Login(Handler):
     """
     User login
     """
     def get(self):
-        self.render('login.html')
+        refer = self.request.headers.get('referer', '/')
+        self.render('login.html', refer = refer)
 
     def post(self):
-        have_error = False
+
+        # redirect url
+        refer = str(self.request.get('refer'))
+        if not refer or refer.startswith('/login'):
+            refer = '/'
+
+        # login process
         self.username = self.request.get('username')
         self.password = self.request.get('password')
         params = dict(ret_user = self.username)
@@ -250,12 +266,9 @@ class Login(Handler):
         if user_info and valid_pw(self.username, 
                                   self.password, 
                                   user_info.password):
-            print "inside valid pw"
             self.set_cookie('name', self.username)
-            sendto = self.get_cookie('current')
-            self.redirect(sendto)
+            self.redirect(refer)
         else:
-            print "wrong creds"
             params['user_error'] = 'Wrong username or password'
             self.render('login.html', **params)
 
@@ -264,9 +277,15 @@ class Logout(Handler):
     Logs out user
     """
     def get(self):
+        # clears user cookie after loggin out
         self.response.headers.add_header('Set-Cookie', 'name=None; Path=/')
-        sendto = self.get_cookie('current')
-        self.redirect(sendto)
+
+        # using cookie for redirect
+        # sendto = self.get_cookie('current')
+        
+        # using headers for redirect
+        refer = self.request.headers.get('referer', '/')
+        self.redirect(refer)
   
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)'
 application = webapp2.WSGIApplication([

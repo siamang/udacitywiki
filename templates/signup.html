@@ -1,32 +1,62 @@
 <!DOCTYPE html>
 <head>
+    <link type="text/css" rel="stylesheet" href="/static/main.css" />
+    <title>WIKI</title>
 </head>
 <body>
-    WELCOME
-    <div>
-        <a href='{{ user_status }}'>user status</a>
-    </div>
-    <hr>
+    <a href='/' id='home'>WIKI</a>
+    <hr align="left">
     <div>
         <form method='post'>
-            <label>username
-                <input type='text' name='username' value='{{ ret_user }}'>{{ user_error }}
-            </label>
-            <br>
-            <label>password
-                <input type='password' name='password'>{{ password_error }}
-            </label>
-            <br>
-            <label>verify pw
-                <input type='password' name='verify'>{{ verify_error }}
-            </label>
-            <br>
-            <label>email(optional)
-                <input type='text' name='email' value='{{ ret_email }}'>{{ email_error }}
-            </label>
-            <br>
-            <input type='submit'>
+            <table>
+                <tr>
+                    <td>
+                        username
+                    </td>
+                    <td>
+                        <input type='text' name='username' value='{{ ret_user }}'>
+                    </td>
+                    <td>
+                        {{ user_error }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        password
+                    </td>
+                    <td>
+                        <input type='password' name='password'>
+                    </td>
+                    <td>
+                        {{ password_error }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        verify pw
+                    </td>
+                    <td>
+                        <input type='password' name='verify'>
+                    </td>
+                    <td>
+                        {{ verify_error }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        email(optional)
+                    </td>
+                    <td>
+                        <input type='text' name='email' value='{{ ret_email }}'>
+                    </td>
+                    <td>
+                        {{ email_error }}
+                    </td>
+                </tr>
+            </table>
+            <input type='hidden' name='refer' value='{{ refer }}'>
 
+            <input type='submit'>
     </div>
     <div>
         {{ html }}
