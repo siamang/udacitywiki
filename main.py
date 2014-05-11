@@ -77,15 +77,14 @@ def get_wiki(url):
     """
     Grab wiki and url
     """
-    
     q = WikiEntries.all()
     q.filter('url =', url)
     wiki = q.order('-created').get()
     # initialize.  If webpage visited first time ever
-    #if url == '/' and not wiki:
-    #    content = "Nothing here"
-    #    q = WikiEntries(wiki = content, url = url)
-    #    q.put()
+    if url == '/' and not wiki:
+        content = "Welcome to a pointless wiki"
+        q = WikiEntries(wiki = content, url = url)
+        q.put()
     # Wiki entry is found
     if wiki:
         content = wiki.wiki
@@ -103,6 +102,7 @@ class MainPage(Handler):
         content = get_wiki(url)
         # Nothing found in the database of /.... (url)
         if not content:
+            print "inside not content"
             # if not logged in redirects to mainpage 
             # else redirect to editpage
             if not self.user:
@@ -110,6 +110,7 @@ class MainPage(Handler):
             elif self.user:
                 self.redirect('/_edit%s' % url)
         elif content:
+            print "inside content"
             params = dict(content = content,
                           url = url)
             if not self.user:
@@ -132,9 +133,7 @@ class EditPage(Handler):
         if not self.user and not content:
             print 'just before redirect'
             self.redirect('/')
-        elif self.user and content:
-            self.redirect(url)
-        elif self.user and not content:
+        elif self.user:
             self.render('edit.html', **params)
 
     def post(self, url):
