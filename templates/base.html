@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="/static/main.css" />
+    <title>WIKI</title>
+</head>
+<body>
+    <a href='/' id='home'>WIKI</a>
+    <div>
+        {% if user %}
+        <div>
+            Signed in as {{ user }}
+        </div> 
+        </div>
+            <a href='/logout'>Log Out</a>
+        </div>
+        {% else %}
+        </div>
+            <a href='/signup'>Sign Up</a>
+            <a href='/login'>Log In</a>
+        </div>
+        {% endif %}
+    </div>
+    <hr align="left">
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

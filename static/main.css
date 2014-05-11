@@ -1,0 +1,19 @@
+
+#home, #home:visited {
+    text-decoration: none;
+    color: black;
+    font-size: 5em;
+}
+
+#test {
+    color: red;
+}
+
+hr {
+    width: 500px;
+}
+
+textarea {
+    width: 500px;
+    height: 100px;
+}
